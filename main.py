@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 data = pd.read_csv('data.txt', sep='\t')
 
 # 데이터 분할 (90% for biodata, 10% for testdata)
-biodata, testdata = train_test_split(data, test_size=0.1, random_state=429)
+biodata, testdata = train_test_split(data, test_size=0.35, random_state=30)
 
 # 인덱스 재설정
 biodata.reset_index(drop=True, inplace=True)
@@ -44,12 +44,9 @@ def txt_to_fasta(txt_file, fasta_file):
 
 
 ifeature_path = "iFeature/iFeature.py"
-feature_types = ["CTDC", "AAC", "DPC", "DDE"]
+feature_types = ["CTDC", "AAC"]
 
-# secondary_structure_dir = "secondary_structure"
-# secondary_path = "scripts/generateSecondaryStructure.py"
-# SecondaryStructure_types = ["SSEC"]
-# psipred_path = 'psipred'  # psipred 프로그램 경로를 지정해주세요.
+# "DPC", "DDE"
 
 
 # model data
@@ -72,23 +69,6 @@ for feature_type in feature_types:
     print(result.stdout)
 
 
-# for feature_type in SecondaryStructure_types:
-#     # 먼저, generateSecondaryStructure.py를 실행하여 예측된 단백질 2차 구조를 생성합니다.
-#     output_file = test_dir + f"/{feature_type}_features_model.csv"
-#     result = subprocess.run(
-#         ["python", secondary_path, "--file", model_file, "--psipred", psipred_path],
-#         capture_output=True, text=True)
-#     result = subprocess.run(
-#         ["python", ifeature_path, "--file", model_file, "--type", feature_type, "--path", secondary_structure_dir, "--out",
-#          output_file], capture_output=True, text=True)
-#
-#     # 결과 출력
-#     print(f"For feature type {feature_type}:")
-#     print(result.stderr)
-#     print(result.stdout)
-
-
-
 # test data
 #------------------------------------------------------------------
 testdata_txt = data_dir + "/testdata.txt"
@@ -101,18 +81,3 @@ for feature_type in feature_types:
     result = subprocess.run(
         ["python", ifeature_path, "--file", test_file, "--type", feature_type, "--out", output_file],
         capture_output=True, text=True)
-
-# for feature_type in SecondaryStructure_types:
-#     # 먼저, generateSecondaryStructure.py를 실행하여 예측된 단백질 2차 구조를 생성합니다.
-#     output_file = test_dir + f"/{feature_type}_features_test.csv"
-#     result = subprocess.run(
-#         ["python", secondary_path, "--file", test_file, "--psipred", psipred_path],
-#         capture_output=True, text=True)
-#     result = subprocess.run(
-#         ["python", ifeature_path, "--file", test_file, "--type", feature_type, "--path", secondary_structure_dir, "--out",
-#          output_file], capture_output=True, text=True)
-#
-#     # 결과 출력
-#     print(f"For feature type {feature_type}:")
-#     print(result.stderr)
-#     print(result.stdout)
